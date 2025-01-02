@@ -15,10 +15,16 @@ const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+
+// CORS Configuration (Allow all origins)
+app.use(cors({
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    credentials: true, // Allow cookies and other credentials
+}));
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI || "your-default-mongo-uri";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://username:password@cluster0.mongodb.net/mydatabase?retryWrites=true&w=majority";
 
 mongoose.set('strictQuery', true); // Recommended for modern Mongoose
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
