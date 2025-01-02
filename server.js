@@ -18,12 +18,15 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB Connection
-// MongoDB Connection
-const MONGO_URI = "mongodb+srv://Bekzod:Bekzod2010@u-devs.qvr3m.mongodb.net/?retryWrites=true&w=majority&appName=u-devs";
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+const MONGO_URI = process.env.MONGO_URI || "your-default-mongo-uri";
 
+mongoose.set('strictQuery', true); // Recommended for modern Mongoose
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => {
+        console.error('MongoDB connection error:', err.message);
+        process.exit(1); // Exit process if the database connection fails
+    });
 
 // API Routes
 app.use('/api/admins', adminRoutes);
